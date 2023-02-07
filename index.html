@@ -1,0 +1,102 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JefAshRaj Nature Text Completion Website</title>
+    <style>
+        body {
+            background-color: green;
+            background-position: center;
+            background-size: cover;
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #main {
+            width: 600px;
+            margin: auto;
+            padding: 10px;
+            background-color: #FFFFFF;
+            border-radius: 5px;
+            box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 24px;
+            padding: 10px;
+            margin: 0;
+        }
+
+        textarea {
+            width: 95%;
+            padding: 10px;
+            font-size: 14px;
+            border: 5px solid #DDDDDD;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        #completeTextButton {
+            width: 100%;
+            background-color: #0085FF;
+            border: none;
+            padding: 10px;
+            font-size: 18px;
+            color: #FFFFFF;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        #completedText {
+            font-size: 16px;
+            padding: 10px;
+            margin: 0;
+        }
+
+        @media only screen and (max-width: 600px) {
+            #main {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="main">
+        <h1>JefAshRaj Text Completion Website</h1>
+        <p>Welcome to our Text Completion Website! Enter some text in the box below and click "Complete Text" to get completed text using GPT-3 API.</p>
+        <textarea id="textInput" rows="4" cols="50" placeholder="Enter some text here..."></textarea>
+        <br />
+        <button id="completeTextButton">Complete Text</button>
+        <br />
+        <h3>Completed Text:</h3>
+        <p id="completedText"></p>
+    </div>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const completeTextButton = document.getElementById('completeTextButton');
+        completeTextButton.addEventListener('click', async() => {
+            const textInput = document.getElementById('textInput').value;
+
+            const response = await axios.post('https://api.openai.com/v1/engines/davinci/completions',
+            {
+                'prompt': textInput,
+                'max_tokens': 50,
+                'temperature': 0.7,
+                'top_p': 0.9
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer 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'
+                }
+            });
+
+            const completedText = response.data.choices[0].text;
+            document.getElementById('completedText').innerHTML = completedText;
+        });
+    </script>
+</body>
+</html>
